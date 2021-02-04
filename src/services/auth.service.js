@@ -36,3 +36,4 @@ export const verifyToken = (token) =>
       resolve(payload);
     });
   });
+
