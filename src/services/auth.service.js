@@ -1,5 +1,5 @@
-import { User } from "../models/user.schema.js";
 import jwt from "jsonwebtoken";
+import { User } from "../models/user.schema.js";
 
 export const signup = async (req, res) => {
   if (!req.body.email || !req.body.password) {
@@ -16,7 +16,7 @@ export const signup = async (req, res) => {
 };
 
 export const signin = async (req, res) => {
-  return res.status(201).send({ token: newToken(req.user) });
+  return res.status(201).send({ user: req.user });
 };
 
 export const newToken = (user) => {
@@ -36,4 +36,3 @@ export const verifyToken = (token) =>
       resolve(payload);
     });
   });
-
