@@ -10,8 +10,10 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       select: false,
+    },
+    provider: {
+      type: String,
     },
   },
   { timestamps: true }
@@ -43,6 +45,14 @@ userSchema.methods.checkPassword = function (password) {
       resolve(same);
     });
   });
+};
+
+userSchema.options.toJSON = {
+  transform: function(doc, ret, options) {
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+  }
 };
 
 export const User = mongoose.model("user", userSchema);

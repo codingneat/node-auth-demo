@@ -1,5 +1,5 @@
-import passport from 'passport';
-import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
+import passport from "passport";
+import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import dotenv from "dotenv";
 import { User } from "../models/user.schema.js";
 
@@ -25,4 +25,4 @@ const jwtStrategy = new JWTStrategy(jwtOpts, async (payload, done) => {
 
 passport.use(jwtStrategy);
 
-export const authJwt = passport.authenticate('jwt', { session: false });
+export const authJwt = passport.authenticate("jwt", { session: false });
