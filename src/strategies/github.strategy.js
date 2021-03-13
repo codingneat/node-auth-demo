@@ -1,8 +1,7 @@
 import passport from "passport";
 import { Strategy as GitHubStrategy } from "passport-github2";
 import dotenv from "dotenv";
-import { User } from "../models/user.schema.js";
-import { newToken } from "../services/auth.service.js";
+import { findOrCreate } from "../services/user.service.js";
 
 dotenv.config();
 
@@ -24,23 +23,33 @@ const githubStrategy = new GitHubStrategy(
       return done(null);
     }
 
-    let user = await User.findOne({ email: data.email });
-    if (!user) {
-      user = await User.create(data);
-    }
+    const user = findOrCreate(data);
 
-    const token = newToken(user);
-    return done(null, { ...user.toJSON(), token });
+    return done(null, { ...user.toJSON() });
   }
 );
 
 passport.use(githubStrategy);
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
 export const authGithub = passport.authenticate("github", {
   scope: ["user:email"],
-  session: false,
+  session: true,
 });
 export const authGithubError = passport.authenticate("github", {
-  failureRedirect: "/auth",
-  session: false,
+  failureRedirect: "/auth/github",
 });
+
+export const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/auth/github');
+};

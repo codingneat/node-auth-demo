@@ -8,3 +8,12 @@ export const listUsers = async (req, res) => {
     return res.status(500).end();
   }
 };
+
+export const findOrCreate = async (data) => {
+  let user = await User.findOne({ email: data.email });
+  if (!user) {
+    user = await User.create(data);
+  }
+  return user;
+};
+
