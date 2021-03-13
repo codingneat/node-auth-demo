@@ -8,6 +8,6 @@ const router = Router();
 router.post("/", authLocal, signin);
 router.post("/signup", signup);
 router.get("/github", authGithub);
-router.get("/github/callback", authGithubError, signin);
+router.get("/github/callback", authGithubError, (req, res) => res.redirect('/'));
 
 export default router;
