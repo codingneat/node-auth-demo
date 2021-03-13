@@ -23,7 +23,7 @@ const githubStrategy = new GitHubStrategy(
       return done(null);
     }
 
-    const user = findOrCreate(data);
+    const user = await findOrCreate(data);
 
     return done(null, { ...user.toJSON() });
   }

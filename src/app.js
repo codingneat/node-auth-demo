@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+
 import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
@@ -7,6 +9,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import passport from "passport";
 import session from "express-session";
+import exphbs from "express-handlebars";
 
 import { ensureAuthenticated } from "./strategies/github.strategy.js";
 
@@ -34,7 +37,19 @@ app.use(session(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.static(path.resolve() + '/src/views'));
+app.engine('hbs', exphbs({
+  defaultLayout: path.resolve() + '/src/views/index.hbs',
+}));
+app.set('view engine', 'hbs');
+app.set('views', path.resolve() + '/src/views');
+
 app.use("/auth", authRouter);
+
+app.get('/', ensureAuthenticated, (req, res) => {
+  res.render('index', { user: req.user });
+});
+
 app.use("/api", ensureAuthenticated);
 app.use("/api/user", userRouter);
 
