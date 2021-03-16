@@ -41,12 +41,3 @@ export const signin = async (req, res) => {
     res.status(500).end();
   }
 };
-
-export const list = async (req, res) => {
-  try {
-    const users = await User.find();
-    return res.send(users);
-  } catch (e) {
-    return res.status(500).end();
-  }
-};
