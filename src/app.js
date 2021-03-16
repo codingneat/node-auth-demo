@@ -23,6 +23,8 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
 
+app.set('trust proxy', true);
+
 app.use(
   auth({
     issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
