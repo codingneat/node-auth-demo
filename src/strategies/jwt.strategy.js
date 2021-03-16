@@ -17,6 +17,7 @@ const jwtStrategy = new JWTStrategy(jwtOpts, async (payload, done) => {
     if (!user) {
       return done(null, false);
     }
+
     return done(null, user);
   } catch (e) {
     return done(e, false);

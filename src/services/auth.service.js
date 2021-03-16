@@ -28,12 +28,3 @@ export const newToken = (user) => {
     }
   );
 };
-
-export const verifyToken = (token) =>
-  new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
-      if (err) return reject(err);
-      resolve(payload);
-    });
-  });
-
